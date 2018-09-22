@@ -1,0 +1,8 @@
+extends layout
+
+block content
+  h1= 'TOP series in imdb'
+  ul
+    each serie in series
+      li= serie.year + ': ' + serie.name
+

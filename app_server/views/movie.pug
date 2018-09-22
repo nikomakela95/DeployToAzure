@@ -1,0 +1,8 @@
+extends layout
+
+block content
+  h1= 'TOP movies in imdb'
+  ul
+    each movie in movies
+      li= movie.year + ': ' + movie.name
+
