@@ -1,17 +1,34 @@
 
+const request = require('request');
+const apiURL = require('./apiURLs');
+
 const movielist = function(req, res){
-    res.render('movie',{
-        movies:
-        [
-            {year:'1994', name:' Rita Hayworth - avain pakoon'},
-            {year:'1972', name:' The Godfather'},
-            {year:'1974', name:' Kummisetä osa II'},
-            {year:'2008', name:'Yön ritari'},
-            {year:'1957', name:'Valamiesten ratkaisu'},
-            {year:'1993', name:'Schindlerin lista'},
-            {year:'2003', name:'Taru sormusten herrasta: Kuninkaan paluu'},
-            {year:'1994', name:'Pulp Fiction: Tarinoita väkivallasta'}
-        ]});
+    const path = '/api/movie';
+    const requestOptions = {
+        url : apiURL.server + path,
+        method : 'GET',
+        json : {},
+        qs : {}
+    };
+
+    request(
+        requestOptions,
+        function (err, response, body){
+            if (err){
+                res.render('error', {message: err.message});
+            } else if (response.statusCode !== 200){
+                res.render('error', {message: 'Error accessing API: ' +
+                        response.statusMessage +
+                        ' ('+ response.statusCode + ')' });
+            } else if (!(body instanceof Array)) {
+                res.render('error', {message: 'Unexpected response data'});
+            } else if (!body.length){
+                res.render('error', {message: 'No documents in collection'});
+            } else {
+                res.render('movie', {movies: body});
+            }
+        }
+    );
 };
 module.exports = {
     movielist

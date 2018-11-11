@@ -1,19 +1,34 @@
+const request = require('request');
+const apiURL = require('./apiURLs');
 
 const serielist = function(req, res){
-    res.render('serie',{
-        series:
-        [
-            {year:'2016', name:'Planeettamme Maa II'},
-            {year:'2001', name:'Taistelutoverit'},
-            {year:'2006', name:'Planeettamme maa'},
-            {year:'2011', name:'Game of Thrones'},
-            {year:'2008', name:'Breaking Bad'},
-            {year:'2002', name:'Langalla'},
-            {year:'2014', name:' Cosmos: Kaikki elämästä'},
-            {year:'2013', name:' Rick and Morty'}
-        ]});
-};
+    const path = '/api/serie';
+    const requestOptions = {
+        url : apiURL.server + path,
+        method : 'GET',
+        json : {},
+        qs : {}
+    };
 
+    request(
+        requestOptions,
+        function (err, response, body){
+            if (err){
+                res.render('error', {message: err.message});
+            } else if (response.statusCode !== 200){
+                res.render('error', {message: 'Error accessing API: ' +
+                        response.statusMessage +
+                        ' ('+ response.statusCode + ')' });
+            } else if (!(body instanceof Array)) {
+                res.render('error', {message: 'Unexpected response data'});
+            } else if (!body.length){
+                res.render('error', {message: 'No documents in collection'});
+            } else {
+                res.render('serie', {series: body});
+            }
+        }
+    );
+};
 module.exports = {
     serielist
 };
