@@ -3,7 +3,7 @@ const apiURL = {
 };
 
 if (process.env.NODE_ENV === 'production') {
-    apiURLs.server = 'http://mäkelä.azurewebsites.net';
+    apiURLs.server = 'http://xn--mkel-load.azurewebsites.net/';
 }
 
 module.exports = apiURL;
