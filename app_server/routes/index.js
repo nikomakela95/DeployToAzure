@@ -11,4 +11,9 @@ router.get('/', ctrlMain.index);  // Home page
 router.get('/movie', ctrlMovie.movielist);  // List of TOP movies in imdb
 router.get('/serie', ctrlSerie.serielist);  // List of TOP series in imdb
 
+router
+    .route('/movie/add')
+    .get(ctrlMovie.showForm)   // Display the form
+    .post(ctrlMovie.addData);  // Get form data and make the API call
+
 module.exports = router;
